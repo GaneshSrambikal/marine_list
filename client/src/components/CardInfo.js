@@ -9,13 +9,13 @@ import {
   Button
 } from "reactstrap";
 import '../App.css'
-import img from '../assets/1.jpg'
+import img from '../assets/Lighthouse.jpg'
 
 const CardInfo = props => {
   return (
     <div className="card">
       <Card>
-        <CardImg top  src={img} alt="Card image cap" className="card-img" />
+        <CardImg top width="100%" src={img} alt="Card image cap" className="card-img" />
         <CardBody>
           <CardTitle>Ganesh Srambikal</CardTitle>
           <CardSubtitle>JavaScript Developer</CardSubtitle>
