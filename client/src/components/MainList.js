@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import {connect} from 'react-redux'
+import {getItems ,deleteItems} from '../actions/itemActions'
+import PropTypes from 'prop-types'
 import uuid from "uuid";
-export default class MainList extends Component {
-  state = {
-    items: [
-      { id: uuid.v4(), name: "Eggs" },
-      { id: uuid.v4(), name: "Milk" },
-      { id: uuid.v4(), name: "Bread" },
-      { id: uuid.v4(), name: "Water" }
-    ]
-  };
-
+class MainList extends Component {
+  componentDidMount(){
+    this.props.getItems();
+  }
+onDeleteClick = id =>{
+  this.props.deleteItems(id);
+}
   render() {
-    const { items } = this.state;
+    const { items } = this.props.item;
 
     return (
       <Container>
@@ -37,16 +37,13 @@ export default class MainList extends Component {
               <CSSTransition key={id} timeout={500} classNames="fade">
                 <ListGroupItem>
                   {name}
+
                   <Button
                     className="remove-btn"
                     color="warning"
                     size="sm"
                     style={{ float: "right" }}
-                    onClick={() => {
-                      this.setState(state => ({
-                        items: state.items.filter(item => item.id !== id)
-                      }));
-                    }}
+                    onClick={this.onDeleteClick.bind(this ,id)}
                   >
                     &times;
                   </Button>
@@ -59,3 +56,13 @@ export default class MainList extends Component {
     );
   }
 }
+
+MainList.propTypes ={
+  getItems : PropTypes.func.isRequired,
+  item : PropTypes.object.isRequired
+}
+
+const mapStateToProps = state =>({
+item : state.item
+})
+export default connect(mapStateToProps , {getItems ,deleteItems})(MainList);
