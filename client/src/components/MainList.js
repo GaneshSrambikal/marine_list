@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import {connect} from 'react-redux'
-import {getItems ,deleteItems} from '../actions/itemActions'
+import {getItems ,deleteItem} from '../actions/itemActions'
 import PropTypes from 'prop-types'
 import uuid from "uuid";
 class MainList extends Component {
@@ -10,27 +10,13 @@ class MainList extends Component {
     this.props.getItems();
   }
 onDeleteClick = id =>{
-  this.props.deleteItems(id);
+  this.props.deleteItem(id);
 }
   render() {
     const { items } = this.props.item;
 
     return (
       <Container>
-        <Button
-          color="info"
-          style={{ marginBottom: " 2rem" }}
-          onClick={() => {
-            const name = prompt("enter name");
-            if (name) {
-              this.setState(state => ({
-                items: [...state.items, { id: uuid.v4(), name }]
-              }));
-            }
-          }}
-        >
-          Add Items
-        </Button>
         <ListGroup className="list-style">
           <TransitionGroup className="shopping-list">
             {items.map(({ id, name }) => (
@@ -59,10 +45,11 @@ onDeleteClick = id =>{
 
 MainList.propTypes ={
   getItems : PropTypes.func.isRequired,
+  deleteItem : PropTypes.func.isRequired,
   item : PropTypes.object.isRequired
 }
 
 const mapStateToProps = state =>({
 item : state.item
 })
-export default connect(mapStateToProps , {getItems ,deleteItems})(MainList);
+export default connect(mapStateToProps , {getItems ,deleteItem})(MainList);
